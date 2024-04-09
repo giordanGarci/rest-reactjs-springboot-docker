@@ -1,5 +1,6 @@
 package com.giordan.apigateway.services;
 
+import com.giordan.apigateway.dtos.PersonDto;
 import com.giordan.apigateway.model.Person;
 import com.giordan.apigateway.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,6 @@ import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Logger;
 
 @Service
@@ -15,30 +15,35 @@ import java.util.logging.Logger;
 public class PersonService {
 
     private final PersonRepository personRepository;
-    private final AtomicLong counter = new AtomicLong();
-    private Logger logger = Logger.getLogger(PersonService.class.getName());
-    public Person findPersonById(Long id) {
+    private final Logger logger = Logger.getLogger(PersonService.class.getName());
+    public PersonDto findPersonById(Long id) {
         logger.info("Finding person by id: " + id);
         Person person = personRepository.findById(id).orElse(null);
         if (person == null) {
             logger.warning("Person not found");
             throw new ObjectNotFoundException(id, Person.class.getName());
         }
-        return person;
+        return objToDto(person);
     }
 
-    public List<Person> findAll() {
+    public List<PersonDto> findAll() {
         logger.info("Finding all persons");
         List<Person> list = personRepository.findAll();
         if (list.isEmpty()) {
             logger.warning("No persons found");
-            throw new ObjectNotFoundException(Optional.of("No persons found"), Person.class.getName());
+            throw new ObjectNotFoundException(Optional.empty(), "No persons found for findAll");
         }
-        return list;
+        return list.stream()
+                .map(this::objToDto)
+                .toList();
     }
 
-    public Person addPerson(Person person) {
+    public PersonDto addPerson(Person person) {
         logger.info("Adding person: " + person);
-        return personRepository.save(person);
+        return objToDto(personRepository.save(person));
+    }
+
+    private PersonDto objToDto(Person person) {
+        return new PersonDto(person.getFirstName(), person.getLastName(), person.getAge(), person.getGender());
     }
 }
