@@ -3,11 +3,10 @@ package com.giordan.apigateway.services;
 import com.giordan.apigateway.dtos.PersonDto;
 import com.giordan.apigateway.model.Person;
 import com.giordan.apigateway.repositories.PersonRepository;
+import com.giordan.apigateway.services.exceptions.ObjectNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
 
 @Service
@@ -21,7 +20,7 @@ public class PersonService {
         Person person = personRepository.findById(id).orElse(null);
         if (person == null) {
             logger.warning("Person not found");
-            throw new ObjectNotFoundException(id, Person.class.getName());
+            throw new ObjectNotFoundException(id, "Person");
         }
         return objToDto(person);
     }
@@ -31,7 +30,7 @@ public class PersonService {
         List<Person> list = personRepository.findAll();
         if (list.isEmpty()) {
             logger.warning("No persons found");
-            throw new ObjectNotFoundException(Optional.empty(), "No persons found for findAll");
+            throw new ObjectNotFoundException("Person");
         }
         return list.stream()
                 .map(this::objToDto)
