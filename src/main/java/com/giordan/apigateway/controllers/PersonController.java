@@ -1,6 +1,7 @@
 package com.giordan.apigateway.controllers;
 
-import com.giordan.apigateway.model.Person;
+import com.giordan.apigateway.dtos.PersonDto;
+import com.giordan.apigateway.dtos.v2.PersonDtoV2;
 import com.giordan.apigateway.services.PersonService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -25,10 +26,24 @@ public class PersonController {
         return ResponseEntity.ok(personServices.findAll());
     }
 
+
+     @GetMapping(value = "/v2/all",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> findAllV2() {
+        return ResponseEntity.ok(personServices.findAll());
+    }
+
     @PostMapping(value = "/create",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> addPerson(@RequestBody Person person) {
-        return ResponseEntity.ok(personServices.addPerson(person));
+    public ResponseEntity<?> addPersonV2(@RequestBody PersonDto personDto) {
+        return ResponseEntity.ok(personServices.addPerson(personDto));
+    }
+
+    @PostMapping(value = "/v2/create",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> addPerson(@RequestBody PersonDtoV2 personDtoV2) {
+        return ResponseEntity.ok(personServices.addPersonV2(personDtoV2));
     }
 }
