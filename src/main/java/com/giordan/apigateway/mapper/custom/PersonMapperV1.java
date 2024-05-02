@@ -1,6 +1,6 @@
 package com.giordan.apigateway.mapper.custom;
 
-import com.giordan.apigateway.dtos.PersonDto;
+import com.giordan.apigateway.dtos.v1.PersonDto;
 import com.giordan.apigateway.mapper.PersonMapper;
 import com.giordan.apigateway.model.Person;
 import org.springframework.stereotype.Service;
@@ -15,6 +15,6 @@ public class PersonMapperV1 implements PersonMapper<PersonDto> {
 
     @Override
     public PersonDto toDto(Person entity) {
-        return new PersonDto(entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getGender());
+        return new PersonDto(entity.getKey(), entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getGender());
     }
 }

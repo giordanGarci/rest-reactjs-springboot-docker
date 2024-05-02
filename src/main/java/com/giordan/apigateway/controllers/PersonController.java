@@ -1,6 +1,6 @@
 package com.giordan.apigateway.controllers;
 
-import com.giordan.apigateway.dtos.PersonDto;
+import com.giordan.apigateway.dtos.v1.PersonDto;
 import com.giordan.apigateway.dtos.v2.PersonDtoV2;
 import com.giordan.apigateway.services.PersonService;
 import com.giordan.apigateway.util.MediaType;

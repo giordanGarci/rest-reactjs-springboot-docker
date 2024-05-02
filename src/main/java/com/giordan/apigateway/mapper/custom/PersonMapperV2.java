@@ -16,6 +16,6 @@ public class PersonMapperV2 implements PersonMapper<PersonDtoV2> {
 
     @Override
     public PersonDtoV2 toDto(Person entity) {
-        return new PersonDtoV2(entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getGender(), LocalDate.now());
+        return new PersonDtoV2(entity.getKey(), entity.getFirstName(), entity.getLastName(), entity.getAge(), entity.getGender(), LocalDate.now());
     }
 }
