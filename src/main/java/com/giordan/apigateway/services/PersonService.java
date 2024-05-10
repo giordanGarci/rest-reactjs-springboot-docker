@@ -24,6 +24,7 @@ public class PersonService {
     private final PersonRepository personRepository;
     private final PersonMapper<PersonDtoV2> personMapperV2;
     private final PersonMapper<PersonDto> personMapperV1;
+    private static final String ALL_PERSONS = "all-persons";
     private final Logger logger = Logger.getLogger(PersonService.class.getName());
     public PersonDtoWithLinks findPersonById(Long id) {
         logger.info("Finding person by id: " + id);
@@ -35,7 +36,7 @@ public class PersonService {
 
         PersonDto dto =  personMapperV1.toDto(person);
         PersonDtoWithLinks personDtoWithLinks = new PersonDtoWithLinks(dto);
-        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel("all-persons"));
+        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel(ALL_PERSONS));
     }
 
     public List<PersonDtoWithLinks> findAll() {
@@ -62,7 +63,7 @@ public class PersonService {
         Person savedPerson = personRepository.save(entity);
         PersonDto savedDto = personMapperV1.toDto(savedPerson);
         PersonDtoWithLinks personDtoWithLinks = new PersonDtoWithLinks(savedDto);
-        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel("all-persons"));
+        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel(ALL_PERSONS));
     }
     public PersonDtoWithLinksV2 addPersonV2(PersonDtoV2 personDtoV2) {
         logger.info("Adding person: " + personDtoV2);
@@ -70,7 +71,7 @@ public class PersonService {
         Person savedPerson = personRepository.save(entity);
         PersonDtoV2 savedDto = personMapperV2.toDto(savedPerson);
         PersonDtoWithLinksV2 personDtoWithLinks = new PersonDtoWithLinksV2(savedDto);
-        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel("all-persons"));
+        return personDtoWithLinks.add(linkTo(methodOn(PersonController.class).findAll()).withRel(ALL_PERSONS));
     }
 
 }
